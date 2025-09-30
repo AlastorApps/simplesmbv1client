@@ -73,8 +73,8 @@ pip install impacket
 
 ```bash
 git clone https://github.com/yourrepo/smbv1-client.git
-cd smbv1-client
-python3 smb_client.py
+cd ssmbv1
+python3 ssmbv1.py
 ```
 
 ---
@@ -99,7 +99,7 @@ python3 smb_client.py
 
 ```
 smbv1-client/
-├── smb_client.py          # Main application
+├── ssmbv1.py          # Main application
 ├── requirements.txt       # Python dependencies
 ├── LICENSE                # MIT License
 └── README.md              # This file
