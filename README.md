@@ -1,46 +1,47 @@
-# SMBv1 Client - Legacy File Sharing Client
+# Simple SMBv1 Client
 
-A graphical SMBv1 client developed in Python for connecting to legacy Samba servers and embedded systems that only support SMB version 1.
+A lightweight graphical SMBv1 client developed in Python for connecting to legacy Samba servers and embedded systems that require the SMB version 1 protocol.
 
 ---
 
-## IMPORTANT: Windows Compatibility Notice
+## Windows Compatibility
 
-### SMBv1 Disabled on Windows
+### Important Note for Windows Users
+Due to Microsoft security patch **KB5065426**, SMBv1 client functionality is disabled by default in Windows 10/11. However, this application can still function with proper configuration.
 
-Due to the security patch **KB5065426** released by Microsoft, SMBv1 has been completely disabled on Windows 10/11 and can no longer be reactivated.
+### Enabling SMBv1 on Windows
+To use this application on Windows, you must enable the SMBv1 client feature.
 
-This application **DOES NOT WORK on Windows** as of **October 2023**.
+**Via PowerShell (Admin):**
+```powershell
+Enable-WindowsOptionalFeature -Online -FeatureName SMB1Protocol-Client
+```
+
+**Via Control Panel:**
+1. Open *Turn Windows features on or off*
+2. Check *SMB 1.0/CIFS File Sharing Support*
+3. Check *SMB 1.0/CIFS Client*
+4. Restart your computer
 
 ---
 
 ## Supported Platforms
 
-- **Linux** (Ubuntu, Debian, CentOS, etc.) – *Fully Supported*
-- **macOS** (all recent versions) – *Fully Supported*
-- **Windows** – *Not Supported* (KB5065426)
+- **Linux (Ubuntu, Debian, CentOS, etc.)** – Works out of the box  
+- **macOS** – Works out of the box  
+- **Windows** – Requires SMBv1 client feature enabled  
 
 ---
 
 ## Features
 
-- Intuitive graphical interface with **tkinter**
-- Remote file browsing with folder navigation
-- File download/upload with progress tracking
-- Real-time search and filtering
-- Performance optimization for large directories
-- Authentication support (anonymous and credentials)
-- Optimized for **Samba 1.9.15** and legacy systems
-
----
-
-## Use Cases
-
-- Embedded systems with SMBv1 (older routers, NAS devices)
-- Industrial machinery with legacy software
-- IoT devices using only SMBv1
-- Laboratory equipment with older instrumentation
-- Isolated networks with legacy protocols
+- Simple graphical interface with Tkinter  
+- Remote file browsing with folder navigation  
+- File download/upload functionality  
+- Basic search and filtering capabilities  
+- Support for large directories with configurable limits  
+- Authentication support (anonymous and credentials)  
+- Optimized for legacy Samba servers and embedded systems  
 
 ---
 
@@ -48,156 +49,135 @@ This application **DOES NOT WORK on Windows** as of **October 2023**.
 
 ### Prerequisites
 
-**Ubuntu/Debian:**
+**Windows:**
+- Python 3.6 or newer  
+- SMBv1 Client feature enabled (see above)  
 
+**Linux (Ubuntu/Debian):**
 ```bash
 sudo apt update
 sudo apt install python3 python3-pip python3-tk
 ```
 
-**CentOS/RHEL:**
-
+**Linux (CentOS/RHEL):**
 ```bash
 sudo yum install python3 python3-pip tkinter
 ```
 
-### Dependencies
-
+### Install the Application
 ```bash
+git clone https://github.com/AlastorApps/simplesmbv1client.git
+cd simplesmbv1client
 pip install impacket
 ```
 
 ---
 
 ## Running the Application
-
 ```bash
-git clone https://github.com/yourrepo/smbv1-client.git
-cd ssmbv1
 python3 ssmbv1.py
 ```
 
 ---
 
-## Configuration
+## Usage
 
-### Connection Parameters
+### Basic Connection
+1. Enter server IP address (e.g., `10.0.4.11`)  
+2. Enter server NetBIOS name (e.g., `SERVER`)  
+3. Select authentication method (anonymous or credentials)  
+4. Click *Connect*  
 
-- **Server IP**: SMB server address  
-- **Server Name**: NetBIOS server name (e.g., `SERVER`)  
-- **Port**: `139` (default for SMBv1)  
-- **Authentication**: Anonymous or with credentials  
+### File Operations
+- Double-click folders to navigate  
+- Use *Root* and *Up* buttons for navigation  
+- Select files and use *Download*/*Upload* buttons  
+- Create new folders with the *New Folder* button  
 
-### File Limitations
-
-- **Display limit**: Configurable (`500–5000 files`)  
-- **Filters**: By type (files/folders) and text search  
+### Configuration Options
+- Adjust file display limits for better performance  
+- Use search filter to find specific files  
+- Toggle between showing files and folders  
 
 ---
 
 ## Project Structure
-
 ```
-smbv1-client/
-├── ssmbv1.py          # Main application
-├── requirements.txt       # Python dependencies
-├── LICENSE                # MIT License
-└── README.md              # This file
+simplesmbv1client/
+├── ssmbv1.py             # Main application file
+├── LICENSE               # MIT License
+└── README.md             # This file
 ```
 
 ---
 
 ## Troubleshooting
 
-### "Connection Failed" Error
+### Connection Issues
+- Verify SMBv1 is enabled on both client and server  
+- Check firewall settings on port 139  
+- Confirm the server supports SMBv1 protocol  
+- Ensure correct server name and IP address  
 
-- Verify the server supports SMBv1  
-- Check firewall and network connectivity  
-- Confirm port **139** is open  
+### Performance Issues
+- Reduce the file display limit for large directories  
+- Use search filters to narrow down results  
+- Check network connectivity and speed  
 
-### Slow Performance
+### Windows-Specific Issues
+If SMBv1 cannot be enabled due to organizational policies, consider using:
+- A Linux virtual machine  
+- Windows Subsystem for Linux (WSL)  
+- A dedicated Linux machine for SMBv1 connections  
 
-- Reduce file limit in settings  
-- Use filters for large directories  
-- Check network speed  
+---
 
-### Linux-Specific Issues
+## Security Considerations
 
-```bash
-# If tkinter is not installed
-sudo apt install python3-tk
+### SMBv1 Security Notes
+SMBv1 is considered insecure due to:
+- Vulnerability to attacks like EternalBlue  
+- Lack of modern encryption standards  
+- Weak authentication mechanisms  
 
-# Network connection permissions
-sudo setcap CAP_NET_RAW+ep /usr/bin/python3.8
-```
+### Recommended Practices
+- Use only in isolated, trusted networks  
+- Do not expose SMBv1 servers to the internet  
+- Consider upgrading legacy systems to support SMBv2/3  
+- Use network segmentation for SMBv1 devices  
 
 ---
 
 ## Development
 
-### Development Dependencies
-
-```bash
-pip install -r requirements.txt
-```
+The application is built with:
+- Python 3.6+  
+- Tkinter for the graphical interface  
+- Impacket library for SMB protocol handling  
+- Threading for responsive UI during operations  
 
 ### Code Structure
-
-- **SMBv1Client**: Core class for SMB operations  
-- **SMBClientGUI**: Tkinter graphical interface  
-- **Threading**: Non-blocking operations handling  
-
-### Extending the Application
-
-The modular structure allows easy addition of:
-
-- New file operations (copy, move, delete)  
-- Support for other protocols  
-- Interface themes  
-- Automated scripting  
-
----
-
-## Security
-
-### SMBv1 Warnings
-
-SMBv1 is an obsolete and insecure protocol that:
-
-- Vulnerable to **EternalBlue attacks**  
-- Lacks modern encryption  
-- Has weak authentication  
-
-Use only in isolated and trusted networks.
-
-### Best Practices
-
-- Use only in private networks  
-- Do not expose to the internet  
-- Isolate SMBv1 servers  
-- Consider upgrading to **SMBv2/3**  
+- **SMBv1Client**: Handles SMB protocol operations  
+- **SMBClientGUI**: Manages the user interface  
+- **Threading**: Ensures non-blocking file operations  
 
 ---
 
 ## Contributing
-
-Contributions are welcome! Areas for improvement:
-
-- Performance enhancements  
-- New features  
-- Documentation  
-- Testing and bug fixes  
+Contributions are welcome. Possible areas of improvement:
+- Performance optimizations for large directories  
+- Additional file operations  
+- Improved error handling  
+- Enhanced user interface features  
 
 ---
 
 ## License
-
-Distributed under the **MIT License**. See `LICENSE` for details.
+This project is licensed under the MIT License – see the [LICENSE](LICENSE) file for details.
 
 ---
 
 ## References
-
-- [Microsoft KB5065426](https://support.microsoft.com/help/5065426)  
+- Microsoft SMBv1 Documentation  
 - [Impacket Library](https://github.com/fortra/impacket)  
-- [SMB Protocol Specification](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-smb/)  
+- SMB Protocol Specifications  
